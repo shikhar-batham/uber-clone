@@ -6,7 +6,7 @@ const SignUp = () => {
         <ScrollView style={styles.container}>
            <View style={styles.container}>
             <View>
-                {/*<Image source={require('../assets/images/logo.png')}/>*/}
+                {/*<Image source={require('../../assets/images/android-icon-monochrome.png')}/>*/}
             </View>
            </View>
         </ScrollView>
