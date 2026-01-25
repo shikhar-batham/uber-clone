@@ -1,15 +1,27 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, ViewStyle, TextStyle } from "react-native";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 
-const CustomButton = ({ title, onPress, style }: any) => {
+interface CustomButtonProps {
+    title: string;
+    onPress: () => void;
+    style?: ViewStyle;
+    textStyle?: TextStyle;
+}
+
+const CustomButton: React.FC<CustomButtonProps> = ({ 
+    title, 
+    onPress, 
+    style, 
+    textStyle 
+}) => {
     return (
         <TouchableOpacity
-            style={[styles.button_container, style]} //Run time style will overwrite the static style
+            style={[styles.button_container, style]}
             activeOpacity={0.8}
             onPress={onPress}
         >
-            <Text style={styles.button_text}>{title}</Text>
+            <Text style={[styles.button_text, textStyle]}>{title}</Text>
         </TouchableOpacity>
     );
 };
@@ -17,16 +29,18 @@ const CustomButton = ({ title, onPress, style }: any) => {
 const styles = StyleSheet.create({
     button_container: {
         backgroundColor: "#070707",
-        width: "100%",
-        paddingVertical: verticalScale(10),
-        paddingHorizontal: scale(10),
-        borderRadius: moderateScale(5),
+        borderRadius: moderateScale(30),
+        marginHorizontal: verticalScale(10),
+        paddingVertical: verticalScale(15),
         alignItems: "center",
+        justifyContent: "center",
+        width: '100%',
+        alignSelf: 'center',
     },
-
     button_text: {
         fontSize: moderateScale(15),
         color: "#ffffff",
+        textAlign: 'center',
     },
 });
 
