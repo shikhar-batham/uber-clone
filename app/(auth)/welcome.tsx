@@ -1,7 +1,6 @@
 import {
     TouchableOpacity,
     Text,
-    SafeAreaView,
     StyleSheet,
     View,
     Dimensions,
@@ -10,10 +9,11 @@ import {Image} from "expo-image";
 import {router} from "expo-router";
 import Carousel from "react-native-reanimated-carousel";
 import {useCallback, useRef, useState} from "react";
-import type { ICarouselInstance } from "react-native-reanimated-carousel";
+import type {ICarouselInstance} from "react-native-reanimated-carousel";
 import {onboarding} from "@/constants";
 import CustomButton from "@/components/CustomButton";
-import { moderateScale, scale, verticalScale } from "react-native-size-matters";
+import {moderateScale, scale, verticalScale} from "react-native-size-matters";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 const {width} = Dimensions.get("window");
 

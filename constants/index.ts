@@ -1,8 +1,8 @@
 // Using require for image imports as it's more reliable in React Native
 const images = {
-    onboarding1: require('../assets/images/android-icon-background.png'),
-    onboarding2: require('../assets/images/icon.png'),
-    onboarding3: require('../assets/images/android-icon-background.png'),
+    onboarding1: require('../assets/images/anim-sign-up-car.jpg'),
+    onboarding2: require('../assets/images/carousal-5.avif'),
+    onboarding3: require('../assets/images/carousal-4.avif'),
 };
 
 export const onboarding = [
