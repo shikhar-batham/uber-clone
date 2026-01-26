@@ -2,21 +2,111 @@ import {StyleSheet, Text, ScrollView, View, Image} from 'react-native';
 import InputField from "@/components/InputField";
 import {useState} from "react";
 import CustomButton from "@/components/CustomButton";
-import {Link} from "expo-router";
+import {Link, useRouter} from "expo-router";
 import {moderateScale, scale, verticalScale} from "react-native-size-matters";
 import OAuth from "@/components/OAuth";
-
+import { useSignIn } from '@clerk/clerk-expo'
+import * as React from 'react'
+import type { EmailCodeFactor } from '@clerk/types'
 
 const SignIn = () => {
+
+    const { signIn, setActive, isLoaded } = useSignIn();
+    const router = useRouter()
+    const [showEmailCode, setShowEmailCode] = React.useState(false)
+    const [code, setCode] = React.useState('')
 
     const [form, setForm] = useState({
         email: '',
         password: ''
     });
 
-    const onSignInPress = async () => {
+    // Handle the submission of the sign-in form
+    const onSignInPress = React.useCallback(async () => {
+        if (!isLoaded) return
 
-    }
+        // Start the sign-in process using the email and password provided
+        try {
+            const signInAttempt = await signIn.create({
+                identifier: form.email,
+                password: form.password,
+            })
+
+            // If sign-in process is complete, set the created session as active
+            // and redirect the user
+            if (signInAttempt.status === 'complete') {
+                await setActive({
+                    session: signInAttempt.createdSessionId,
+                    navigate: async ({ session }) => {
+                        if (session?.currentTask) {
+                            // Check for tasks and navigate to custom UI to help users resolve them
+                            // See https://clerk.com/docs/guides/development/custom-flows/authentication/session-tasks
+                            console.log(session?.currentTask)
+                            return
+                        }
+
+                        router.replace('/')
+                    },
+                })
+            } else if (signInAttempt.status === 'needs_second_factor') {
+                // Check if email_code is a valid second factor
+                // This is required when Client Trust is enabled and the user
+                // is signing in from a new device.
+                // See https://clerk.com/docs/guides/secure/client-trust
+                const emailCodeFactor = signInAttempt.supportedSecondFactors?.find(
+                    (factor): factor is EmailCodeFactor => factor.strategy === 'email_code',
+                )
+
+                if (emailCodeFactor) {
+                    await signIn.prepareSecondFactor({
+                        strategy: 'email_code',
+                        emailAddressId: emailCodeFactor.emailAddressId,
+                    })
+                    setShowEmailCode(true)
+                }
+            } else {
+                // If the status is not complete, check why. User may need to
+                // complete further steps.
+                console.error(JSON.stringify(signInAttempt, null, 2))
+            }
+        } catch (err) {
+            // See https://clerk.com/docs/guides/development/custom-flows/error-handling
+            // for more info on error handling
+            console.error(JSON.stringify(err, null, 2))
+        }
+    }, [isLoaded, signIn, setActive, router, form.email, form.password])
+
+    // Handle the submission of the email verification code
+    const onVerifyPress = React.useCallback(async () => {
+        if (!isLoaded) return
+
+        try {
+            const signInAttempt = await signIn.attemptSecondFactor({
+                strategy: 'email_code',
+                code,
+            })
+
+            if (signInAttempt.status === 'complete') {
+                await setActive({
+                    session: signInAttempt.createdSessionId,
+                    navigate: async ({ session }) => {
+                        if (session?.currentTask) {
+                            // Check for tasks and navigate to custom UI to help users resolve them
+                            // See https://clerk.com/docs/guides/development/custom-flows/authentication/session-tasks
+                            console.log(session?.currentTask)
+                            return
+                        }
+
+                        router.replace('/')
+                    },
+                })
+            } else {
+                console.error(JSON.stringify(signInAttempt, null, 2))
+            }
+        } catch (err) {
+            console.error(JSON.stringify(err, null, 2))
+        }
+    }, [isLoaded, signIn, setActive, router, code])
 
     return (
         <ScrollView style={styles.container}>
