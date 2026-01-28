@@ -65,7 +65,7 @@ const SignUp = () => {
                             return
                         }
 
-                        router.replace('/(root)/home')
+                        router.replace('/(root)/(tabs)/home')
                     },
                 })
             } else {

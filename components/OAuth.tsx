@@ -18,7 +18,7 @@ const OAuth = () => {
 
             if (createdSessionId) {
                 await setActive({session: createdSessionId});
-                router.replace('/(root)/home');
+                router.replace('/(root)/(tabs)/home');
             }
         } catch (err) {
             console.error('OAuth error', err);
@@ -32,9 +32,7 @@ const OAuth = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.divider}/>
             <Text style={styles.orText}>Or</Text>
-            <View style={styles.divider}/>
             <CustomButton
                 title="Continue with Google"
                 onPress={onGooglePress}
@@ -48,7 +46,7 @@ const OAuth = () => {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        marginVertical: 20,
+        marginVertical: 0,
     },
     divider: {
         flex: 1,
@@ -67,8 +65,8 @@ const styles = StyleSheet.create({
     googleButton: {
         backgroundColor: 'white',
         borderWidth: 1,
-        borderColor: '#e1e1e1',
-        borderRadius: 8,
+        borderColor: 'rgba(163,163,163,0.82)',
+        borderRadius: 10,
         padding: 12,
     },
     googleButtonText: {
