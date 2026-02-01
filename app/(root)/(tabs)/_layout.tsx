@@ -1,9 +1,10 @@
 import {Stack, Tabs} from "expo-router";
 import {ImageSourcePropType, View} from "react-native";
 import {Image} from "expo-image";
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 
-const TabIcon = ({source, focused}: { source: ImageSourcePropType, focused: boolean }) => (
+const TabIcon = ({ name, focused }: { name: string, focused: boolean }) => (
     <View style={{
         width: 50,
         height: 50,
@@ -11,15 +12,14 @@ const TabIcon = ({source, focused}: { source: ImageSourcePropType, focused: bool
         backgroundColor: focused ? "#38ccc7" : "transparent",
         justifyContent: "center",
         alignItems: "center",
-        top: -20, // Move the icon up to make it overlap with the tab bar
+        top: -20,
         borderWidth: 2,
         borderColor: focused ? "#38ccc7" : "transparent"
     }}>
-        <Image 
-            source={source} 
-            tintColor={focused ? "white" : "#888888"}
-            contentFit="contain" 
-            style={{width: 24, height: 24}}
+        <Ionicons 
+            name={name as any} 
+            size={24} 
+            color={focused ? "white" : "#888888"}
         />
     </View>
 )
@@ -67,8 +67,7 @@ const TabsLayout = () => {
                 name="home"
                 options={{
                     title: "Home",
-                    tabBarIcon: ({focused}) => <TabIcon focused={focused}
-                                                        source={require('../../../assets/images/done.avif')}/>
+                    tabBarIcon: ({focused}) => <TabIcon focused={focused} name="home-outline" />
                 }}
             />
 
@@ -76,8 +75,7 @@ const TabsLayout = () => {
                 name="chat"
                 options={{
                     title: "Chat",
-                    tabBarIcon: ({focused}) => <TabIcon focused={focused}
-                                                        source={require('../../../assets/images/done.avif')}/>
+                    tabBarIcon: ({focused}) => <TabIcon focused={focused} name="chatbubble-ellipses-outline" />
                 }}
             />
 
@@ -85,8 +83,7 @@ const TabsLayout = () => {
                 name="rides"
                 options={{
                     title: "Rides",
-                    tabBarIcon: ({focused}) => <TabIcon focused={focused}
-                                                        source={require('../../../assets/images/done.avif')}/>
+                    tabBarIcon: ({focused}) => <TabIcon focused={focused} name="car-sport-outline" />
                 }}
             />
 
@@ -94,8 +91,7 @@ const TabsLayout = () => {
                 name="profile"
                 options={{
                     title: "Profile",
-                    tabBarIcon: ({focused}) => <TabIcon focused={focused}
-                                                        source={require('../../../assets/images/done.avif')}/>
+                    tabBarIcon: ({focused}) => <TabIcon focused={focused} name="person-outline" />
                 }}
             />
         </Tabs>
