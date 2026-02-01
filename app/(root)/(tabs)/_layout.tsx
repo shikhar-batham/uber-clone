@@ -4,24 +4,23 @@ import {Image} from "expo-image";
 
 
 const TabIcon = ({source, focused}: { source: ImageSourcePropType, focused: boolean }) => (
-
     <View style={{
-        display: "flex",
-        flexDirection: "row",
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: focused ? "#38ccc7" : "transparent",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: focused ? "#c83131" : "",
-        borderRadius: 50
+        top: -20, // Move the icon up to make it overlap with the tab bar
+        borderWidth: 2,
+        borderColor: focused ? "#38ccc7" : "transparent"
     }}>
-        <View style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: focused ? "#38ccc7" : ""
-        }}>
-            <Image source={source} tintColor="white" contentFit="contain" style={{width: 7, height: 7}}/>
-        </View>
+        <Image 
+            source={source} 
+            tintColor={focused ? "white" : "#888888"}
+            contentFit="contain" 
+            style={{width: 24, height: 24}}
+        />
     </View>
 )
 
@@ -29,23 +28,38 @@ const TabsLayout = () => {
     return (
         <Tabs
             screenOptions={{
-                tabBarActiveTintColor: "white",
+                tabBarActiveTintColor: "#f3f3f3",
                 tabBarInactiveTintColor: "white",
-                tabBarShowLabel: false,
+                tabBarShowLabel: true,
                 tabBarStyle: {
+                    marginHorizontal:10,
                     backgroundColor: "#333333",
-                    borderRadius: 100,
+                    borderTopWidth: 0,
+                    elevation: 0,
+                    height: 70,
                     paddingBottom: 0,
-                    overflow: "hidden",
-                    marginHorizontal: 20,
-                    marginBottom: 20,
+                    paddingTop: 10,
+                    position: 'absolute',
+                    left: 20,
+                    right: 20,
+                    bottom: 20,
+                    borderRadius: 35,
+                    shadowColor: "#000",
+                    shadowOffset: {
+                        width: 0,
+                        height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                },
+                tabBarItemStyle: {
                     height: 60,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    flexDirection: "row",
-                    position: "absolute"
-                }
+                    padding: 0,
+                    margin: 0,
+                },
+                tabBarIconStyle: {
+                    marginTop: 10,
+                },
                 // headerShown: false,
             }}
         >
